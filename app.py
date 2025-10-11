@@ -8,7 +8,7 @@ if 'data' not in st.session_state:
     st.session_state['data'] = []
 
 vehicle_list = [
-    "JCB 140 1", "JCB 140 2", "JCB 140 3","JCB 140 4","JCB 140 5","JCB 140 6","JCB 140 7","JCB 140 8","JCB 140 9",JCB 140 10","JCB 140 11","Excavator 225", "Volvo 80","JCB 140 12","JCB 140 13","JCB 140 14",
+    "JCB 140 1", "JCB 140 2", "JCB 140 3","JCB 140 4","JCB 140 5","JCB 140 6","JCB 140 7","JCB 140 8","JCB 140 9","JCB 140 10","JCB 140 11","Excavator 225", "Volvo 80","JCB 140 12","JCB 140 13","JCB 140 14",
 ]
 
 st.write("### Enter Daily Details")
