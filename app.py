@@ -6,6 +6,12 @@ st.image("LOGO.jpg",width=120)
 
 st.title("Excavator Work & Wage Tracker (Cheruvadi Earth Movers)")
 
+# Privacy section
+driver_code = st.text_input("Enter your private driver code:", type="password")
+if not driver_code:
+    st.warning("Please enter your driver code for privacy.")
+    st.stop()
+
 if 'data' not in st.session_state:
     st.session_state['data'] = []
 
@@ -25,7 +31,7 @@ advance = st.number_input("Advance", min_value=0.0, step=0.1)
 shifting = st.number_input("Shifting Charge", min_value=0.0, step=0.1)
 batta = st.number_input("Batta", min_value=0.0, step=0.1)
 salary = st.number_input("Driver Salary", min_value=0.0, step=0.1)
-remark = st.text_input("Remarks / Driver Name")
+remark = st.text_input("Remarks (Site/Manager/Extra)")
 
 work_hours = closing_reading - starting_reading if closing_reading >= starting_reading else 0.0
 breaker_hours = work_hours if mode == "Breaker" else 0
@@ -35,6 +41,7 @@ submit = st.button("Add Entry")
 
 if submit:
     st.session_state['data'].append({
+        "Driver Code": driver_code,  # this is the privacy key
         "Vehicle": vehicle,
         "Date": date.strftime("%Y-%m-%d"),
         "Starting": starting_reading,
@@ -50,11 +57,12 @@ if submit:
     })
     st.success("Entry added!")
 
-st.write("### All Entries")
-if st.session_state['data']:
-    df = pd.DataFrame(st.session_state['data'])
+st.write("### Your Entries Today")
+personal_entries = [row for row in st.session_state['data'] if row["Driver Code"] == driver_code]
+if personal_entries:
+    df = pd.DataFrame(personal_entries)
     st.dataframe(df)
-    st.write("#### Totals (All Vehicles)")
+    st.write("#### Totals (Only Your Vehicles)")
     st.write(f"Total Breaker Hours: {df['Breaker Hours'].sum()}")
     st.write(f"Total Bucket Hours: {df['Bucket Hours'].sum()}")
     st.write(f"Total Diesel: {df['Diesel'].sum()} L")
@@ -63,8 +71,9 @@ if st.session_state['data']:
     st.write(f"Total Batta: ₹{df['Batta'].sum()}")
 
     csv = df.to_csv(index=False).encode('utf-8')
-    st.download_button("Download All Data as CSV", data=csv, file_name="excavator_report.csv")
+    st.download_button("Download Your Data as CSV", data=csv, file_name=f"{driver_code}_excavator_report.csv")
 else:
-    st.write("No entries yet.")
+    st.write("No entries for your code yet.")
 
-st.info("Tip: To clear data, refresh the page. For sharing and cloud saving, cloud/database setup can be added later.")
+st.info("Tip: To clear all data, refresh the page. Drivers only see/download their own entries for privacy.")
+    
