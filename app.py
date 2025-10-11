@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-st,set_page_config(page_title="Cheruvadi Earth Movers",page_icon="LOGO.jpg")
+st.set_page_config(page_title="Cheruvadi Earth Movers",page_icon="LOGO.jpg")
 st.image("LOGO.jpg",width=120)
 
 st.title("Excavator Work & Wage Tracker (Cheruvadi Earth Movers)")
